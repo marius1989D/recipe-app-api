@@ -15,6 +15,16 @@ class UserManager(BaseUserManager):
 
         return user
 
+    def create_superuser(self, email, password):
+        """Creates and saves a new superuser"""
+        user = self.create_user(email, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+
+        return user
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     """Custon user model that supports using email insted of username"""
     email = models.EmailField(max_length=255, unique=True)
